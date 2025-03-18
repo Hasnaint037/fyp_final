@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 import { Lock, Mail, User } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Signup() {
   return (
@@ -15,9 +16,9 @@ function Signup() {
         className="w-[70vw] lg:w-[30vw] xl:w-[34vw] xxl:w-[22vw] m-auto px-4 py-5 rounded-lg flex flex-col gap-1 justify-center shadow-xl"
       >
         <motion.h2
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
           className="text-xl font-semibold text-center mb-2"
         >
           Register Here
@@ -66,6 +67,17 @@ function Signup() {
           <Button className="bg-gray-800 w-full text-white hover:bg-black">
             Register
           </Button>
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="text-center text-sm mt-3 font-sm"
+          >
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-500 font-semibold cursor-pointer hover:underline">
+              Login
+            </Link>
+          </motion.p>
         </motion.div>
       </motion.div>
     </div>
