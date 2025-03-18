@@ -63,6 +63,7 @@ function Signup() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.7 }}
+          className="mt-2"
         >
           <Button className="bg-gray-800 w-full text-white hover:bg-black">
             Register
