@@ -23,6 +23,7 @@ function Signup() {
   } = useForm();
 
   function moveToNext(response) {
+    console.log(response)
     if (response.success) {
       toast.success(response.message)
       navigate("/")
