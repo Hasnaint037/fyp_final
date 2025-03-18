@@ -125,7 +125,7 @@ function Login() {
             onClick={handleSubmit(submitHandler)}
             disabled={userLoading}
           >
-            {userLoading ? <Loader /> : "Register"}
+            {userLoading ? <Loader /> : "Login"}
           </Button>
         </motion.div>
 
