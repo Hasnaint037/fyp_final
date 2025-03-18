@@ -51,6 +51,7 @@ function Login() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.7 }}
+          className="mt-2"
         >
           <Button className="bg-gray-800 w-full text-white hover:bg-black">
             Login
@@ -63,7 +64,10 @@ function Login() {
           className="text-center text-sm mt-3 font-sm"
         >
           Don't have an account?{" "}
-          <Link to="/signup" className="text-blue-500 font-semibold cursor-pointer hover:underline">
+          <Link
+            to="/signup"
+            className="text-blue-500 font-semibold cursor-pointer hover:underline"
+          >
             Register
           </Link>
         </motion.p>
