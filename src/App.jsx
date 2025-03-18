@@ -3,6 +3,7 @@ import Signup from './screeens/Signup';
 import Login from './screeens/Login';
 import Home from "./screeens/Home"
 import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/static/ProtectedRoute';
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home></Home>}></Route>
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
       </Routes>
     </div>
   )
