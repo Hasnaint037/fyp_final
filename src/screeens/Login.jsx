@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
-import { Lock, Mail, User } from "lucide-react";
+import { Lock, Mail } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -15,12 +16,12 @@ function Login() {
         className="w-[70vw] lg:w-[30vw] xl:w-[34vw] xxl:w-[22vw] m-auto px-4 py-5 rounded-lg flex flex-col gap-1 justify-center shadow-xl"
       >
         <motion.h2
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
           className="text-xl font-semibold text-center mb-2"
         >
-          Register Here
+          Login
         </motion.h2>
         <motion.div
           initial={{ x: -50, opacity: 0 }}
@@ -55,6 +56,17 @@ function Login() {
             Login
           </Button>
         </motion.div>
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="text-center text-sm mt-3 font-sm"
+        >
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-500 font-semibold cursor-pointer hover:underline">
+            Register
+          </Link>
+        </motion.p>
       </motion.div>
     </div>
   );
