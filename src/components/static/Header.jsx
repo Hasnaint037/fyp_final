@@ -19,7 +19,7 @@ function Header() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[240px] sm:w-[300px]">
+            <SheetContent side="left" className="w-[240px] sm:w-[300px] bg-white">
               <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-2">
                   <ShoppingBag className="h-6 w-6" />

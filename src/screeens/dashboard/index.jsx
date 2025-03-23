@@ -6,23 +6,22 @@ import { Button } from '@/components/ui/button'
 
 function index() {
   return (
-    <div className='w-[100vw] h-[100vh] p-8'>
-      <div className='flex gap-2 w-[90%] m-auto'>
-        <div className='w-[70%]'>
+    <div className='w-full'>
+      <div className='flex gap-2 flex-col lg:flex-row w-[90%] m-auto'>
+        <div className='w-[100%] lg:w-[70%]'>
           <ProductCountGraph />
         </div>
-        <div className='w-[30%] py-4'>
+        <div className='w-[100%] lg:w-[30%] py-4'>
           <OrderStatusGraph />
         </div>
       </div>
-      <div className='w-[90%] m-auto mt-5 mb-3'>
+      <div className='w-[90%] m-auto mt-5 mb-5 pb-3'>
         <div className='flex justify-between items-center mb-5'>
           <h1 className='text-xl font-bold'>Products</h1>
           <Button className="bg-black text-white">Add New Product</Button>
         </div>
         <ProductsTable />
       </div>
-      <p>thank you</p>
     </div>
   )
 }
