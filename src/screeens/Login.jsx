@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserLogin } from "@/store/features/auth/user.slice";
+import { reset, UserLogin } from "@/store/features/auth/user.slice";
 import { motion } from "framer-motion";
 import { Lock, Mail } from "lucide-react";
 import React from "react";
@@ -28,6 +28,7 @@ function Login() {
       navigate("/")
     } else {
       toast.error(response)
+      dispatch(reset())
     }
   }
 
