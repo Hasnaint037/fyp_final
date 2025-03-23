@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserRegister } from "@/store/features/auth/user.slice";
+import { reset, UserRegister } from "@/store/features/auth/user.slice";
 import { motion } from "framer-motion";
 import { Lock, Mail, User } from "lucide-react";
 import React from "react";
@@ -29,6 +29,7 @@ function Signup() {
       navigate("/")
     } else {
       toast.error(response)
+      dispatch(reset())
     }
   }
 
