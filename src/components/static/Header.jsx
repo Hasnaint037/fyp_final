@@ -4,9 +4,28 @@ import { Button } from '../ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { LogOut, Menu, Settings, ShoppingBag, User } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { toast } from 'sonner'
+import { reset } from '@/store/features/auth/user.slice'
+import { UserLogout } from '@/store/features/auth/user.slice'
 
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  function moveToNext(response) {
+    console.log(response)
+    if (response.success) {
+      toast.success(response.message)
+      navigate("/login")
+    } else {
+      toast.error(response)
+      dispatch(reset())
+    }
+  }
+  const logoutHandler = () => {
+    dispatch(UserLogout({ moveToNext }))
+  }
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b bg-background">
@@ -62,7 +81,7 @@ function Header() {
                   Profile
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={logoutHandler}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
