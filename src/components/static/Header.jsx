@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { LogOut, Menu, Settings, ShoppingBag, User } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
 import { reset } from '@/store/features/auth/user.slice'
 import { UserLogout } from '@/store/features/auth/user.slice'
@@ -13,6 +13,14 @@ import { UserLogout } from '@/store/features/auth/user.slice'
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector(state => state.user);
+  const name = user?.user?.username;
+  let prename = "";
+  for (let index = 0; index < name?.length; index++) {
+    if (index === 0 || name[index - 1] === " ") {
+      prename += name[index];
+    }
+  }
   function moveToNext(response) {
     console.log(response)
     if (response.success) {
@@ -26,6 +34,7 @@ function Header() {
   const logoutHandler = () => {
     dispatch(UserLogout({ moveToNext }))
   }
+
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b bg-background">
@@ -68,19 +77,11 @@ function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <Avatar>
-                    <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarFallback>{prename}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logoutHandler}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
