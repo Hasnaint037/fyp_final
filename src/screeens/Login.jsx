@@ -25,7 +25,11 @@ function Login() {
   function moveToNext(response) {
     if (response.success) {
       toast.success(response.message)
-      navigate("/")
+      if (response?.user?.role === "admin") {
+        navigate("/dashboard")
+      } else {
+        navigate("/")
+      }
     } else {
       toast.error(response)
       dispatch(reset())
