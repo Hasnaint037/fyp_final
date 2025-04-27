@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { DeleteProduct, GetAllProduct } from '@/store/features/product/product.slice'
+import { DeleteProduct, GetAllProduct, GetProductCounts } from '@/store/features/product/product.slice'
 import { MoreHorizontal } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -59,6 +59,7 @@ function ProductsTable() {
     if (response.success) {
       toast.success(response.message)
       dispatch(GetAllProduct())
+      dispatch(GetProductCounts());
     } else {
       toast.error(response)
       dispatch(reset())

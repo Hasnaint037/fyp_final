@@ -3,6 +3,9 @@ import {
   createProduct,
   deleteProduct,
   getAllProducts,
+  getForChildren,
+  getForMen,
+  getForWomen,
   getProductsCounts,
   updateProduct,
 } from "./product.service";
@@ -20,6 +23,15 @@ const initialState = {
 
   productCount: [],
   productCountLoading: false,
+
+  forMen: [],
+  forMenLoading: false,
+
+  forWomen: [],
+  forWomenLoading: false,
+
+  forChildren: [],
+  forChildrenLoading: false,
 
   isError: false,
   isSuccess: false,
@@ -130,6 +142,63 @@ export const GetProductCounts = createAsyncThunk(
   }
 );
 
+export const GetForMen = createAsyncThunk(
+  "product/getformen",
+  async (_, thunkAPI) => {
+    try {
+      const response = await getForMen();
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      moveToNext(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const GetForWomen = createAsyncThunk(
+  "product/getforwomen",
+  async (_, thunkAPI) => {
+    try {
+      const response = await getForWomen();
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      moveToNext(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const GetForChildren = createAsyncThunk(
+  "product/getforchildren",
+  async (_, thunkAPI) => {
+    try {
+      const response = await getForChildren();
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      moveToNext(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -205,6 +274,48 @@ const productSlice = createSlice({
       })
       .addCase(GetProductCounts.rejected, (state, action) => {
         state.productCountLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      .addCase(GetForMen.pending, (state) => {
+        state.forMenLoading = true;
+      })
+      .addCase(GetForMen.fulfilled, (state, action) => {
+        state.forMen = action.payload.products;
+        state.forMenLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(GetForMen.rejected, (state, action) => {
+        state.forMenLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      .addCase(GetForWomen.pending, (state) => {
+        state.forWomenLoading = true;
+      })
+      .addCase(GetForWomen.fulfilled, (state, action) => {
+        state.forWomen = action.payload.products;
+        state.forWomenLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(GetForWomen.rejected, (state, action) => {
+        state.forWomenLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      .addCase(GetForChildren.pending, (state) => {
+        state.forChildrenLoading = true;
+      })
+      .addCase(GetForChildren.fulfilled, (state, action) => {
+        state.forChildren = action.payload.products;
+        state.forChildrenLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(GetForChildren.rejected, (state, action) => {
+        state.forChildrenLoading = false;
         state.isError = true;
         state.message = action.payload;
       });
