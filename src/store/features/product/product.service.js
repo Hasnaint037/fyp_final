@@ -26,3 +26,18 @@ export const getProductsCounts = async () => {
   const response = await api.get("product/getCategoryWiseProducts");
   return response.data;
 };
+
+export const getForMen = async () => {
+  const response = await api.get("product/getall/men");
+  return response.data;
+};
+
+export const getForWomen = async () => {
+  const response = await api.get("product/getall/women");
+  return response.data;
+};
+
+export const getForChildren = async () => {
+  const response = await api.get("product/getall/children");
+  return response.data;
+};
