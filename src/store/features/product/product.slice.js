@@ -73,7 +73,7 @@ export const GetAllProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      moveToNext(message);
+      // moveToNext(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -95,7 +95,6 @@ export const DeleteProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      moveToNext(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -117,7 +116,6 @@ export const UpdateProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      moveToNext(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -136,7 +134,7 @@ export const GetProductCounts = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      moveToNext(message);
+      // moveToNext(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -155,7 +153,7 @@ export const GetForMen = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      moveToNext(message);
+      // moveToNext(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -174,7 +172,7 @@ export const GetForWomen = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      moveToNext(message);
+      // moveToNext(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -193,7 +191,7 @@ export const GetForChildren = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      moveToNext(message);
+      // moveToNext(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -241,7 +239,7 @@ const productSlice = createSlice({
       .addCase(DeleteProduct.pending, (state) => {
         state.deleteProductLoading = true;
       })
-      .addCase(DeleteProduct.fulfilled, (state, action) => {
+      .addCase(DeleteProduct.fulfilled, (state) => {
         state.deleteProductLoading = false;
         state.isSuccess = true;
       })
