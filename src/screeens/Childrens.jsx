@@ -114,11 +114,11 @@ function Childrens() {
           Why Parents Love Us?
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+          {/* <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
             <FaTshirt className="text-4xl text-blue-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Soft & Comfy</h3>
             <p className="text-gray-600">Gentle fabrics for sensitive skin.</p>
-          </div>
+          </div> */}
           <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
             <FaShieldAlt className="text-4xl text-green-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Safe Materials</h3>

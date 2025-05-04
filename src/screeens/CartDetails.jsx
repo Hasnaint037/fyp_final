@@ -63,14 +63,6 @@ export default function CartDetails() {
             (acc, item) => acc + item.price * (quantities[item._id] || 1),
             0
           ),
-          shippingAddress: {
-            name: "Guest User",
-            phone: "0000000000",
-            address: "N/A",
-            city: "N/A",
-            postalCode: "00000",
-            country: "N/A",
-          },
         };
 
         dispatch(CreateOrder({ payload: orderPayload, moveToNext }))
@@ -107,8 +99,14 @@ export default function CartDetails() {
         size={sizes}
         setSize={setSizes}
       />
-      <div className="flex justify-end items-center gap-3">
-        <h3>Total : {cartItems.reduce((acc, item) => acc + item.price, 0)}</h3>
+      <div className="flex justify-end ites-center gap-3">
+        <h3>
+          Total :
+          {cartItems.reduce(
+            (acc, item) => acc + item.price * (quantities[item._id] || 1),
+            0
+          )}
+        </h3>
         <Button
           size="lg"
           onClick={handlePlaceOrder}

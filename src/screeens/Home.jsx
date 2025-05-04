@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import heroimage from "../asset/hero.jpg";
 import { FaShippingFast, FaStar, FaHeadset } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { allProducts, allProductLoading } = useSelector(
     (state) => state?.product
   );
@@ -36,7 +38,7 @@ function Home() {
   ) : (
     <div className="mb-10">
       {/* Hero Section */}
-      <div className="relative h-[60vh] w-full rounded-xl overflow-hidden shadow-md">
+      <div className="relative h-[60vh] w-full overflow-hidden shadow-md">
         <img
           src={heroimage}
           alt="Hero"
@@ -132,17 +134,16 @@ function Home() {
         <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
           Shop by Category
         </h2>
-        <div className="flex gap-6 overflow-x-auto pb-2">
-          {["Men", "Women", "Accessories", "Shoes", "New Arrivals", "Sale"].map(
-            (category, idx) => (
-              <div
-                key={idx}
-                className="min-w-[160px] h-40 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center rounded-xl text-lg font-semibold shadow-md hover:scale-105 transition"
-              >
-                {category}
-              </div>
-            )
-          )}
+        <div className="flex justify-center gap-6 overflow-x-auto pb-2">
+          {["Men", "Women", "children"].map((category, idx) => (
+            <div
+              key={idx}
+              className="min-w-[160px] h-40 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center rounded-xl text-lg font-semibold shadow-md hover:scale-105 transition"
+              onClick={() => navigate(category.toLocaleLowerCase())}
+            >
+              {category}
+            </div>
+          ))}
         </div>
       </div>
 
