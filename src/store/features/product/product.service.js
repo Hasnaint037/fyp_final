@@ -28,16 +28,16 @@ export const getProductsCounts = async () => {
 };
 
 export const getForMen = async () => {
-  const response = await api.get("product/getall/men");
+  const response = await api.get("product/getall/mobile");
   return response.data;
 };
 
 export const getForWomen = async () => {
-  const response = await api.get("product/getall/women");
+  const response = await api.get("product/getall/laptop");
   return response.data;
 };
 
 export const getForChildren = async () => {
-  const response = await api.get("product/getall/children");
+  const response = await api.get("product/getall/others");
   return response.data;
 };

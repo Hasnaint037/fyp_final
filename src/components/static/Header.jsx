@@ -6,14 +6,13 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 import { LogOut, Menu, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { reset } from "@/store/features/auth/user.slice";
-import { UserLogout } from "@/store/features/auth/user.slice";
+import { reset, UserLogout } from "@/store/features/auth/user.slice";
 import { IoCart } from "react-icons/io5";
 
 function Header() {
@@ -31,7 +30,6 @@ function Header() {
   }
 
   function moveToNext(response) {
-    console.log(response);
     if (response.success) {
       toast.success(response.message);
       navigate("/login");
@@ -44,13 +42,6 @@ function Header() {
   const logoutHandler = () => {
     dispatch(UserLogout({ moveToNext }));
   };
-
-  // Updated style for active and inactive links
-  const style = ({ isActive }) => ({
-    color: isActive ? "#f53b57" : "#d1d5db", // Lighter color for unselected
-    fontWeight: isActive ? 600 : 400,
-    textDecoration: isActive ? "underline" : "none", // Underline for active links
-  });
 
   useEffect(() => {
     const updateCartCount = () => {
@@ -66,7 +57,7 @@ function Header() {
 
   return (
     <div>
-      <header className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-indigo-600 to-indigo-800 shadow-lg">
+      <header className="sticky top-0 z-50 w-full border-b bg-black shadow-lg">
         <div className="container flex h-16 justify-between items-center px-4 sm:px-6">
           {/* Mobile menu */}
           <Sheet>
@@ -82,39 +73,61 @@ function Header() {
             >
               <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-2">
-                  <ShoppingBag className="h-6 w-6 text-indigo-600" />
-                  <span className="font-bold text-indigo-700">ACME Store</span>
+                  <ShoppingBag className="h-6 w-6 text-emerald-600" />
+                  <span className="font-bold text-emerald-700 text-lg">
+                    TechNova
+                  </span>
                 </div>
                 <nav className="flex flex-col gap-4">
                   {user?.user?.role === "user" && (
                     <>
                       <NavLink
                         to="/"
-                        className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-indigo-600"
-                        style={style}
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                            isActive
+                              ? "text-emerald-700 underline font-semibold"
+                              : "text-gray-500 hover:text-emerald-600"
+                          }`
+                        }
                       >
                         Home
                       </NavLink>
                       <NavLink
-                        to="/men"
-                        className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-indigo-600"
-                        style={style}
+                        to="/mobile"
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                            isActive
+                              ? "text-emerald-700 underline font-semibold"
+                              : "text-gray-500 hover:text-emerald-600"
+                          }`
+                        }
                       >
-                        Men
+                        Mobile
                       </NavLink>
                       <NavLink
-                        to="/women"
-                        className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-indigo-600"
-                        style={style}
+                        to="/laptop"
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                            isActive
+                              ? "text-emerald-700 underline font-semibold"
+                              : "text-gray-500 hover:text-emerald-600"
+                          }`
+                        }
                       >
-                        Women
+                        Laptop
                       </NavLink>
                       <NavLink
-                        to="/children"
-                        className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-indigo-600"
-                        style={style}
+                        to="/others"
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                            isActive
+                              ? "text-emerald-700 underline font-semibold"
+                              : "text-gray-500 hover:text-emerald-600"
+                          }`
+                        }
                       >
-                        Children
+                        Others
                       </NavLink>
                     </>
                   )}
@@ -123,10 +136,11 @@ function Header() {
             </SheetContent>
           </Sheet>
 
+          {/* Brand Logo */}
           <div className="flex items-center justify-between gap-2 md:mr-6">
-            <ShoppingBag className="h-6 w-6 text-white" />
-            <span className="hidden font-bold sm:inline-block text-white">
-              ACME Store
+            <ShoppingBag className="h-6 w-6 text-emerald-500" />
+            <span className="hidden sm:inline-block text-white text-xl font-extrabold tracking-wide">
+              TechNova
             </span>
           </div>
 
@@ -136,47 +150,68 @@ function Header() {
               <>
                 <NavLink
                   to="/"
-                  className="flex items-center gap-2 text-sm font-medium text-white hover:text-indigo-300"
-                  style={style}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-white underline font-semibold"
+                        : "text-emerald-200 hover:text-white"
+                    }`
+                  }
                 >
                   Home
                 </NavLink>
                 <NavLink
-                  to="/men"
-                  className="flex items-center gap-2 text-sm font-medium text-white hover:text-indigo-300"
-                  style={style}
+                  to="/mobile"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-white underline font-semibold"
+                        : "text-emerald-200 hover:text-white"
+                    }`
+                  }
                 >
-                  Men
+                  Mobile
                 </NavLink>
                 <NavLink
-                  to="/women"
-                  className="flex items-center gap-2 text-sm font-medium text-white hover:text-indigo-300"
-                  style={style}
+                  to="/laptop"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-white underline font-semibold"
+                        : "text-emerald-200 hover:text-white"
+                    }`
+                  }
                 >
-                  Women
+                  Laptop
                 </NavLink>
                 <NavLink
-                  to="/children"
-                  className="flex items-center gap-2 text-sm font-medium text-white hover:text-indigo-300"
-                  style={style}
+                  to="/others"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-white underline font-semibold"
+                        : "text-emerald-200 hover:text-white"
+                    }`
+                  }
                 >
-                  Children
+                  Others
                 </NavLink>
               </>
             )}
           </nav>
 
+          {/* Cart & Avatar */}
           <div className="flex items-center gap-4 md:ml-auto">
             {user?.user?.role === "user" && (
-              <div className="bg-indigo-600 px-2 py-1 rounded-full relative">
+              <div className="relative bg-emerald-600 px-2 py-1 rounded-full hover:scale-105 transition-transform">
                 <div
-                  className="cart cursor-pointer"
                   onClick={() => navigate("/cart")}
+                  className="cursor-pointer"
                 >
-                  <IoCart size={30} className="text-white" />
+                  <IoCart size={28} className="text-white" />
                 </div>
                 {cartData.length > 0 && (
-                  <div className="cart-num absolute top-[-5px] right-[-10px] bg-red-500 px-2 rounded-full text-white">
+                  <div className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-md">
                     {cartData.length}
                   </div>
                 )}
@@ -186,7 +221,7 @@ function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <Avatar>
-                    <AvatarFallback className="bg-indigo-700 text-white">
+                    <AvatarFallback className="bg-emerald-700 text-white font-semibold">
                       {prename}
                     </AvatarFallback>
                   </Avatar>
@@ -194,9 +229,12 @@ function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
-                className="bg-indigo-700 text-white"
+                className="bg-[#000000] text-white shadow-lg"
               >
-                <DropdownMenuItem onClick={logoutHandler}>
+                <DropdownMenuItem
+                  onClick={logoutHandler}
+                  className="hover:bg-[#000000] hover:text-white transition-colors cursor-pointer"
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>

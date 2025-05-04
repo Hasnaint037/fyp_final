@@ -10,15 +10,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast, Toaster } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateProduct, GetAllProduct, GetProductCounts, UpdateProduct } from "@/store/features/product/product.slice";
+import {
+  CreateProduct,
+  GetAllProduct,
+  GetProductCounts,
+  reset,
+  UpdateProduct,
+} from "@/store/features/product/product.slice";
 import Loader from "@/components/static/Loader";
 
-function CreateProductModal({ open, setOpen, productToEdit, setProductToEdit }) {
+function CreateProductModal({
+  open,
+  setOpen,
+  productToEdit,
+  setProductToEdit,
+}) {
   const dispatch = useDispatch();
-  const { createProductLoading, updateProductLoading } = useSelector(state => state?.product);
+  const { createProductLoading, updateProductLoading } = useSelector(
+    (state) => state?.product
+  );
   const formdata = new FormData();
   const [title, setTitle] = useState();
   const [quantity, setQuantity] = useState();
@@ -30,10 +49,10 @@ function CreateProductModal({ open, setOpen, productToEdit, setProductToEdit }) 
   function moveToNext(response) {
     if (response.success) {
       toast.success(response.message);
-      dispatch(GetAllProduct())
-      dispatch(GetProductCounts())
+      dispatch(GetAllProduct());
+      dispatch(GetProductCounts());
       setOpen(false);
-      setProductToEdit(null)
+      setProductToEdit(null);
     } else {
       toast.error(response);
       dispatch(reset());
@@ -50,7 +69,7 @@ function CreateProductModal({ open, setOpen, productToEdit, setProductToEdit }) 
     }
     formdata.append("category", category);
     if (productToEdit) {
-      formdata.append("id", productToEdit?._id)
+      formdata.append("id", productToEdit?._id);
       dispatch(UpdateProduct({ payload: formdata, moveToNext }));
       return;
     }
@@ -62,10 +81,10 @@ function CreateProductModal({ open, setOpen, productToEdit, setProductToEdit }) 
       setPrice(productToEdit?.price);
       setQuantity(productToEdit.quantity);
       setDescription(productToEdit?.description);
-      setTitle(productToEdit?.name)
-      setCategory(productToEdit?.category)
+      setTitle(productToEdit?.name);
+      setCategory(productToEdit?.category);
     }
-  }, [productToEdit])
+  }, [productToEdit]);
 
   return (
     <div>
@@ -74,7 +93,9 @@ function CreateProductModal({ open, setOpen, productToEdit, setProductToEdit }) 
         {/* <DialogTrigger></DialogTrigger> */}
         <DialogContent className="bg-white">
           <DialogHeader>
-            <DialogTitle>{productToEdit ? "Update Product" : "Add Your Product"}</DialogTitle>
+            <DialogTitle>
+              {productToEdit ? "Update Product" : "Add Your Product"}
+            </DialogTitle>
           </DialogHeader>
           <div>
             <Input
@@ -126,21 +147,33 @@ function CreateProductModal({ open, setOpen, productToEdit, setProductToEdit }) 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <Select value={category} onValueChange={(value) => setCategory(value)}>
+            <Select
+              value={category}
+              onValueChange={(value) => {
+                console.log(category);
+                setCategory(value);
+              }}
+            >
               <SelectTrigger className="mt-3">
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="men">Men</SelectItem>
-                <SelectItem value="women">Women</SelectItem>
-                <SelectItem value="children">Children</SelectItem>
+                <SelectItem value="mobile">Mobile</SelectItem>
+                <SelectItem value="laptop">Laptop</SelectItem>
+                <SelectItem value="others">Others</SelectItem>
               </SelectContent>
             </Select>
             <Button
               className="bg-black text-white mt-3 w-full hover:bg-gray-900"
               onClick={addProduct}
             >
-              {createProductLoading || updateProductLoading ? <Loader /> : (productToEdit ? "Update Product" : "Add Product")}
+              {createProductLoading || updateProductLoading ? (
+                <Loader />
+              ) : productToEdit ? (
+                "Update Product"
+              ) : (
+                "Add Product"
+              )}
             </Button>
           </div>
         </DialogContent>

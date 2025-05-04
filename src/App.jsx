@@ -30,7 +30,7 @@ function App() {
           }
         ></Route>
         <Route
-          path="/men"
+          path="/mobile"
           element={
             <ProtectedRoute>
               <Mens />
@@ -38,7 +38,7 @@ function App() {
           }
         ></Route>{" "}
         <Route
-          path="/women"
+          path="/laptop"
           element={
             <ProtectedRoute>
               <Womens />
@@ -46,7 +46,7 @@ function App() {
           }
         ></Route>{" "}
         <Route
-          path="/children"
+          path="/others"
           element={
             <ProtectedRoute>
               <Childrens />

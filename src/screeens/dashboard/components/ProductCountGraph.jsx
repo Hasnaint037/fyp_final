@@ -1,58 +1,31 @@
-import CustomGraphChart from "@/components/static/CustomGraphChart";
+import React from "react";
+import ReactApexChart from "react-apexcharts";
 import { useSelector } from "react-redux";
 
-function ProductCountGraph() {
-  const { productCount } = useSelector(state => state.product);
-
-  const productCountData = {
-    options: {
-      chart: {
-        type: "line",
-        zoom: {
-          enabled: true,
-        },
-      },
-      xaxis: {
-        categories: ["Men", "Women", "Children"],
-        title: {
-          text: "Product Categories",
-        },
-      },
-      yaxis: {
-        title: {
-          text: "Number of Products",
-        },
-      },
-      stroke: {
-        curve: "smooth",
-      },
-      markers: {
-        size: 5,
-      },
-      colors: ["#3B82F6"],
-      legend: {
-        position: "top",
-      },
+const PieChart = () => {
+  const { productCount } = useSelector((state) => state.product);
+  const chartOptions = {
+    chart: {
+      type: "pie",
     },
-    series: [
-      {
-        name: "Product Count",
-        data: productCount || [], // Number of products available in each category
-      },
-    ],
+    labels: ["Mobile", "Laptop", "Others"],
+    colors: ["#457AEE", "#1FFAE2", "#FF6F61"],
+    legend: {
+      position: "top",
+    },
   };
 
   return (
-    <CustomGraphChart
-      title="Product Count by Category"
-      type="line"
-      options={productCountData.options}
-      series={productCountData.series}
-      height={350}
-      width="100%"
-      showLoader={true}
-    />
+    <div>
+      <h3>Product Distribution</h3>
+      <ReactApexChart
+        options={chartOptions}
+        series={productCount}
+        type="pie"
+        height={350}
+      />
+    </div>
   );
-}
+};
 
-export default ProductCountGraph;
+export default PieChart;

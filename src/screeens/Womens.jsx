@@ -4,139 +4,244 @@ import { GetForWomen } from "@/store/features/product/product.slice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { FaShoppingBag, FaRocket, FaStar } from "react-icons/fa";
-import womenHero from "../asset/women.jpeg"; // Replace with actual path or use a random image
+import { useNavigate } from "react-router-dom";
+import { FaLaptop, FaBolt, FaShieldAlt, FaMicrochip } from "react-icons/fa";
+import laptopHero from "../asset/women.jpeg";
 
-function Womens() {
+function Laptops() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { forWomen, forWomenLoading } = useSelector((state) => state.product);
+  console.log(forWomen);
 
   useEffect(() => {
     dispatch(GetForWomen());
   }, []);
 
   const containerVariants = {
-    hidden: {},
+    hidden: { opacity: 0 },
     visible: {
+      opacity: 1,
       transition: {
         staggerChildren: 0.1,
+        delayChildren: 0.3,
       },
     },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95, y: 10 },
-    visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.3 } },
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 100 },
+    },
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.8 } },
   };
 
   return forWomenLoading ? (
     <PageLoader />
   ) : (
-    <div className="w-full mb-10">
+    <div className="w-full mb-10 bg-gray-50">
       {/* Hero Section */}
-      <div className="relative h-[50vh] w-full overflow-hidden shadow-lg">
+      <div className="relative h-[60vh] w-full overflow-hidden">
         <img
-          src={womenHero}
-          alt="Women Fashion"
+          src={laptopHero}
+          alt="Laptop Collection"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center px-4">
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-blue-800/50 flex flex-col justify-end items-center text-center pb-12 px-4">
           <motion.h1
-            className="text-white text-4xl sm:text-5xl font-bold"
-            initial={{ opacity: 0, y: -30 }}
+            className="text-white text-4xl sm:text-5xl font-bold mb-3"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
           >
-            Women's Collection
+            Premium Laptops
           </motion.h1>
           <motion.p
-            className="text-gray-100 mt-4 text-lg max-w-2xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-blue-100 text-lg max-w-2xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Discover the latest trends in women's fashion with elegance and
-            comfort.
+            Power your productivity with our high-performance laptops
           </motion.p>
+          <motion.button
+            onClick={() => navigate("#products")}
+            className="mt-6 bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Shop Now
+          </motion.button>
         </div>
       </div>
 
-      {/* Product Section */}
-      <div className="w-[85%] m-auto mt-10">
-        <motion.h1
-          className="text-2xl font-semibold"
+      {/* Features Section */}
+      <motion.div
+        className="w-[90%] mx-auto mt-16"
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+      >
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+          Why Our Laptops Stand Out
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-sm text-center"
+            whileHover={{
+              y: -5,
+              boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)",
+            }}
+          >
+            <div className="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3">
+              <FaLaptop className="text-blue-600 text-xl" />
+            </div>
+            <h3 className="font-semibold">Ultra-Portable</h3>
+            <p className="text-sm text-gray-600 mt-1">Lightweight designs</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-sm text-center"
+            whileHover={{
+              y: -5,
+              boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)",
+            }}
+          >
+            <div className="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3">
+              <FaBolt className="text-blue-600 text-xl" />
+            </div>
+            <h3 className="font-semibold">Fast Processors</h3>
+            <p className="text-sm text-gray-600 mt-1">Blazing speed</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-sm text-center"
+            whileHover={{
+              y: -5,
+              boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)",
+            }}
+          >
+            <div className="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3">
+              <FaMicrochip className="text-blue-600 text-xl" />
+            </div>
+            <h3 className="font-semibold">Powerful Specs</h3>
+            <p className="text-sm text-gray-600 mt-1">Top-tier hardware</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-sm text-center"
+            whileHover={{
+              y: -5,
+              boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)",
+            }}
+          >
+            <div className="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3">
+              <FaShieldAlt className="text-blue-600 text-xl" />
+            </div>
+            <h3 className="font-semibold">Extended Warranty</h3>
+            <p className="text-sm text-gray-600 mt-1">3-year coverage</p>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Products Section */}
+      <div id="products" className="w-[90%] m-auto mt-20">
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
+          className="flex justify-between items-center mb-8"
         >
-          Explore Products for Women
-        </motion.h1>
+          <h1 className="text-2xl font-bold text-gray-800">Featured Laptops</h1>
+        </motion.div>
 
         <motion.div
-          className="flex-1 mt-5"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {forWomen.length > 0 ? (
-              forWomen.map((product, index) => (
-                <motion.div key={product._id || index} variants={cardVariants}>
-                  <ProductCard product={product} />
-                </motion.div>
-              ))
-            ) : (
-              <p className="text-center text-xl font-semibold w-full col-span-full">
-                No Products Found
-              </p>
-            )}
-          </div>
+          {forWomen?.length > 0 ? (
+            forWomen.map((product, index) => (
+              <motion.div
+                key={product._id || index}
+                variants={cardVariants}
+                whileHover={{ scale: 1.03 }}
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))
+          ) : (
+            <motion.p
+              className="text-center text-xl font-semibold w-full col-span-full py-12"
+              variants={fadeIn}
+            >
+              No Laptops Found
+            </motion.p>
+          )}
         </motion.div>
       </div>
 
-      {/* Quote / Statement Section */}
-      <div className="bg-pink-100 py-10 mt-20">
-        <div className="text-center max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl sm:text-3xl font-bold text-pink-900">
-            "Style is a way to say who you are without having to speak."
-          </h2>
-          <p className="mt-4 text-pink-800">
-            Elevate your wardrobe with curated pieces made for every woman.
-          </p>
-        </div>
+      {/* Brands Section */}
+      <div className="w-[90%] m-auto mt-20">
+        <motion.h2
+          className="text-2xl font-bold text-center mb-8 text-gray-800"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          Top Brands
+        </motion.h2>
+        <motion.div
+          className="flex flex-wrap justify-center gap-6"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
+          {["Apple", "Dell", "HP", "Lenovo", "Asus", "MSI"].map((brand, i) => (
+            <motion.div
+              key={i}
+              className="bg-white p-4 rounded-lg shadow-md w-24 h-24 flex items-center justify-center hover:shadow-lg transition cursor-pointer"
+              variants={cardVariants}
+              whileHover={{ scale: 1.1 }}
+            >
+              <span className="font-bold text-gray-700">{brand}</span>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
 
-      {/* Highlights Section */}
-      <div className="w-[85%] m-auto mt-16">
-        <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">
-          Why Choose Us?
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
-            <FaShoppingBag className="text-4xl text-pink-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Chic Styles</h3>
-            <p className="text-gray-600">
-              Trend-setting designs for every occasion.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
-            <FaRocket className="text-4xl text-purple-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
-            <p className="text-gray-600">
-              Lightning fast shipping to your doorstep.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
-            <FaStar className="text-4xl text-yellow-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Loved by Customers</h3>
-            <p className="text-gray-600">
-              Top-rated products trusted by thousands.
-            </p>
-          </div>
-        </div>
+      {/* CTA Section */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white mt-20 py-16 px-4">
+        <motion.div
+          className="max-w-4xl mx-auto text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-3xl font-bold mb-4">Need Tech Advice?</h2>
+          <p className="text-lg mb-8 text-blue-100 max-w-2xl mx-auto">
+            Our laptop specialists can help you find the perfect machine for
+            work, gaming, or creativity.
+          </p>
+          <motion.button
+            className="bg-white text-blue-700 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Chat With Expert
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );
 }
 
-export default Womens;
+export default Laptops;

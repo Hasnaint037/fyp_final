@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { CiHeart } from "react-icons/ci";
+import { CiHeart, CiShoppingCart } from "react-icons/ci";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const [cartData, setCartData] = useState([]);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const isAlreadyInCart = cartData.find((data) => data._id === product._id);
 
   const addToCartHandler = (e) => {
@@ -13,6 +17,11 @@ function ProductCard({ product }) {
     const updatedCart = [...existingCart, product];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     window.dispatchEvent(new Event("updateCart"));
+  };
+
+  const toggleWishlist = (e) => {
+    e.stopPropagation();
+    setIsWishlisted(!isWishlisted);
   };
 
   useEffect(() => {
@@ -28,54 +37,100 @@ function ProductCard({ product }) {
   }, []);
 
   return (
-    <div onClick={() => navigate("/product-detail", { state: { product } })}>
-      <div
-        key={product.id}
-        className="group relative shadow-lg hover:shadow-2xl border rounded-lg border-gray-200 overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-105"
-      >
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gradient-to-b from-gray-100 to-gray-200">
-          <img
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      onClick={() => navigate("/product-detail", { state: { product } })}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="cursor-pointer"
+    >
+      <div className="group relative bg-white rounded-xl shadow-md hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 ease-in-out">
+        {/* Image Container */}
+        <div className="relative aspect-square w-full overflow-hidden">
+          <motion.img
             src={product?.image}
             alt={product.name}
-            className="h-60 w-full object-cover object-center group-hover:opacity-80 transition-opacity duration-200 ease-in-out"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            initial={{ scale: 1 }}
+            animate={{ scale: isHovered ? 1.05 : 1 }}
           />
-          {product.isNew && (
-            <div className="absolute top-2 left-2 bg-gradient-to-r from-teal-500 to-teal-300 text-white text-xs px-2 py-1 rounded-full shadow-md">
-              NEW
-            </div>
-          )}
-          <div className="absolute top-1 left-1 bg-pink-500 text-xs text-white py-1 px-2 rounded-full shadow-lg">
-            For {product?.category}
+
+          {/* Badges */}
+          <div className="absolute top-3 left-3 flex gap-2">
+            {product.isNew && (
+              <span className="bg-emerald-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
+                NEW
+              </span>
+            )}
+            <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
+              {product?.category}
+            </span>
           </div>
-          <div className="bg-pink-600 absolute top-1 right-1 px-1 py-1 rounded-full text-white font-bold shadow-lg">
-            <CiHeart size={20} />
-          </div>
+
+          {/* Wishlist Button */}
+          <motion.button
+            onClick={toggleWishlist}
+            className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            {isWishlisted ? (
+              <FaHeart className="text-rose-500" size={18} />
+            ) : (
+              <CiHeart className="text-gray-600" size={20} />
+            )}
+          </motion.button>
         </div>
-        <div className="mt-4 flex justify-between px-4">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-900 hover:text-gray-700 transition-colors duration-200">
-              {product.name}
-            </h3>
-            <p className="text-sm text-gray-500">
-              {product.description.split(" ").slice(0, 10).join(" ")}
-              {product.description.split(" ").length > 10 ? "..." : ""}
-            </p>
-          </div>
-          <p className="text-lg font-semibold text-gray-800">
-            {product.price.toFixed(2)}/-
+
+        {/* Product Info */}
+        <div className="p-4">
+          <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+            {product.name}
+          </h3>
+          <p className="text-sm text-gray-500 mt-1 line-clamp-2 min-h-[40px]">
+            {product.description}
           </p>
+
+          <div className="flex items-center justify-between mt-3">
+            <span className="text-lg font-bold text-gray-900">
+              {product.price.toFixed(2)}/-
+            </span>
+            {product.originalPrice && (
+              <span className="text-sm text-gray-400 line-through">
+                ${product.originalPrice.toFixed(2)}
+              </span>
+            )}
+          </div>
+
+          {/* Add to Cart Button */}
+          <motion.button
+            onClick={addToCartHandler}
+            disabled={isAlreadyInCart}
+            whileHover={{ scale: isAlreadyInCart ? 1 : 1.03 }}
+            whileTap={{ scale: isAlreadyInCart ? 1 : 0.97 }}
+            className={`mt-4 w-full flex items-center justify-center gap-2 py-2 rounded-lg font-medium transition-all ${
+              isAlreadyInCart
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white"
+            }`}
+          >
+            {isAlreadyInCart ? (
+              <>
+                <FaShoppingCart size={16} />
+                Added to Cart
+              </>
+            ) : (
+              <>
+                <CiShoppingCart size={18} />
+                Add to Cart
+              </>
+            )}
+          </motion.button>
         </div>
-        <button
-          className={`mt-4 w-[90%] ms-[5%] mb-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 py-2 rounded-lg text-white font-semibold transition-all duration-200 ease-in-out transform ${
-            isAlreadyInCart && "bg-gray-500 cursor-not-allowed"
-          }`}
-          onClick={addToCartHandler}
-          disabled={isAlreadyInCart}
-        >
-          {isAlreadyInCart ? "Already in Cart" : "Add to Cart"}
-        </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, ShoppingCart, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +21,7 @@ function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () =>
@@ -37,20 +38,31 @@ function ProductDetails() {
 
   const buyHandler = () => {
     Swal.fire({
-      title: "Are you sure you want to place this order?",
-      html: `<p>Once the order is placed, it <strong>cannot be cancelled</strong>.</p>
-      <p>Our team will contact you regarding your location, shipping address, payments, and order deadline.</p>`,
+      title: "Confirm Your Purchase",
+      html: `<div class="text-left">
+        <p class="text-lg mb-3">You're about to purchase <strong>${
+          product.name
+        }</strong>.</p>
+        <div class="bg-blue-50 p-4 rounded-lg">
+          <p>• Quantity: <strong>${quantity}</strong></p>
+          <p>• Color: <strong>${color || "Not selected"}</strong></p>
+          <p>• Size: <strong>${size || "Not selected"}</strong></p>
+          <p class="mt-2">• Total: <strong class="text-lg">$${(
+            product.price * quantity
+          ).toFixed(2)}</strong></p>
+        </div>
+      </div>`,
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Place Order",
-      cancelButtonText: "Cancel",
+      confirmButtonText: "Confirm Purchase",
+      cancelButtonText: "Review Details",
       customClass: {
         confirmButton:
-          "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-800 me-2",
+          "bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 me-2",
         cancelButton:
-          "bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-800",
+          "bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300",
       },
       buttonsStyling: false,
-      icon: "warning",
     }).then((result) => {
       if (result.isConfirmed) {
         const orderPayload = {
@@ -65,74 +77,141 @@ function ProductDetails() {
               color,
             },
           ],
+          totalAmount: product.price * quantity,
         };
-        dispatch(CreateOrder({ payload: orderPayload, moveToNext }));
-        Swal.fire({
-          title: "Order Placed!",
-          text: "Your order has been successfully placed, and our team will contact you for further steps.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      } else if (result.isDenied) {
-        Swal.fire("Order not placed", "Your order was not processed", "info");
+        dispatch(CreateOrder({ payload: orderPayload, moveToNext }))
+          .unwrap()
+          .then(() => {
+            Swal.fire({
+              title: "Order Confirmed!",
+              text: "Your purchase has been successfully placed.",
+              icon: "success",
+              confirmButtonText: "View Orders",
+            });
+          })
+          .catch(() => {
+            Swal.fire(
+              "Error",
+              "There was an issue placing your order",
+              "error"
+            );
+          });
       }
     });
   };
 
+  const toggleWishlist = () => {
+    setIsWishlisted(!isWishlisted);
+    toast.success(
+      !isWishlisted ? "Added to wishlist" : "Removed from wishlist"
+    );
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
+  const scaleUp = {
+    hover: { scale: 1.05 },
+    tap: { scale: 0.95 },
+  };
+
   return (
-    <div className="mb-10 mt-6 w-[90%] mx-auto">
-      <Toaster />
-      <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="mb-10 mt-6 w-[90%] mx-auto"
+    >
+      <Toaster position="top-center" richColors />
+
+      <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
         {/* Image Section */}
         <motion.div
-          className="relative aspect-square overflow-hidden rounded-lg border bg-gray-100"
+          className="relative aspect-square overflow-hidden rounded-xl bg-gray-50 shadow-md"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <Badge className="absolute left-3 top-3 z-10 bg-indigo-200 text-indigo-800">
-            {product?.category}
-          </Badge>
-          <img
+          <div className="absolute left-4 top-4 z-10 flex gap-2">
+            <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-200">
+              {product?.category}
+            </Badge>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleWishlist}
+            className={`absolute right-4 top-4 z-10 p-2 rounded-full ${
+              isWishlisted
+                ? "bg-rose-100 text-rose-500"
+                : "bg-gray-100 text-gray-500"
+            }`}
+          >
+            <Heart
+              className={`h-5 w-5 ${isWishlisted ? "fill-current" : ""}`}
+            />
+          </motion.button>
+
+          <motion.img
             src={product?.image}
-            alt="Product"
-            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+            alt={product?.name}
+            className="object-cover w-full h-full"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.3 }}
           />
         </motion.div>
 
         {/* Product Info */}
         <motion.div
-          className="md:col-span-1 lg:col-span-2 space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
+          className="space-y-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2,
+              },
+            },
+          }}
         >
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-            {product?.name}
-          </h1>
+          <motion.div variants={fadeInUp}>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {product?.name}
+            </h1>
+          </motion.div>
 
-          <div className="flex items-baseline gap-3">
-            <span className="text-4xl font-semibold text-indigo-700">
-              {product?.price}/-
+          <motion.div variants={fadeInUp} className="flex items-baseline gap-3">
+            <span className="text-3xl font-bold text-emerald-600">
+              {product?.price.toFixed(2)}/-
             </span>
-          </div>
+          </motion.div>
 
-          <Separator className="my-4" />
+          <motion.div variants={fadeInUp}>
+            <Separator className="my-4 bg-gray-200" />
+          </motion.div>
 
-          <div>
-            <h3 className="mb-2 font-semibold text-gray-700">Description</h3>
-            <p className="text-gray-600">{product?.description}</p>
-          </div>
+          <motion.div variants={fadeInUp}>
+            <h3 className="mb-2 text-lg font-semibold text-gray-800">
+              Description
+            </h3>
+            <p className="text-gray-600 leading-relaxed">
+              {product?.description}
+            </p>
+          </motion.div>
 
           {/* Size Selection */}
-          <div>
-            <h3 className="mb-3 font-semibold text-gray-700">Select Size</h3>
+          <motion.div variants={fadeInUp}>
+            <h3 className="mb-3 text-lg font-semibold text-gray-800">Size</h3>
             <RadioGroup
               value={size}
               onValueChange={setSize}
               className="flex flex-wrap gap-3"
             >
-              {["xs", "s", "m", "l", "xl", "xxl"].map((item) => (
+              {["XS", "S", "M", "L", "XL", "XXL"].map((item) => (
                 <div key={item} className="flex items-center">
                   <RadioGroupItem
                     value={item}
@@ -141,30 +220,31 @@ function ProductDetails() {
                   />
                   <Label
                     htmlFor={`size-${item}`}
-                    className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white font-medium uppercase transition hover:bg-indigo-100 peer-data-[state=checked]:border-indigo-600 peer-data-[state=checked]:bg-indigo-50 peer-data-[state=checked]:text-indigo-700"
+                    className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white font-medium transition hover:bg-emerald-50 hover:border-emerald-400 peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50 peer-data-[state=checked]:text-emerald-700"
                   >
                     {item}
                   </Label>
                 </div>
               ))}
             </RadioGroup>
-          </div>
+          </motion.div>
 
           {/* Color Selection */}
-          <div>
-            <h3 className="mb-3 font-semibold text-gray-700">Select Color</h3>
+          <motion.div variants={fadeInUp}>
+            <h3 className="mb-3 text-lg font-semibold text-gray-800">Color</h3>
             <RadioGroup
               value={color}
               onValueChange={setColor}
               className="flex gap-3 flex-wrap"
             >
               {[
-                { id: "black", color: "bg-black" },
-                { id: "white", color: "bg-white border" },
-                { id: "blue", color: "bg-blue-600" },
-                { id: "red", color: "bg-red-600" },
+                { id: "black", color: "bg-gray-900", name: "Black" },
+                { id: "white", color: "bg-white border", name: "White" },
+                { id: "blue", color: "bg-blue-600", name: "Blue" },
+                { id: "green", color: "bg-emerald-600", name: "Green" },
+                { id: "red", color: "bg-red-600", name: "Red" },
               ].map((c) => (
-                <div key={c.id}>
+                <div key={c.id} className="flex flex-col items-center gap-1">
                   <RadioGroupItem
                     value={c.id}
                     id={`color-${c.id}`}
@@ -172,52 +252,58 @@ function ProductDetails() {
                   />
                   <Label
                     htmlFor={`color-${c.id}`}
-                    className={`h-8 w-8 rounded-full cursor-pointer ${c.color} block peer-data-[state=checked]:ring-2 peer-data-[state=checked]:ring-indigo-600 peer-data-[state=checked]:ring-offset-2 transition-all`}
+                    className={`h-10 w-10 rounded-full cursor-pointer ${c.color} flex items-center justify-center peer-data-[state=checked]:ring-2 peer-data-[state=checked]:ring-emerald-500 peer-data-[state=checked]:ring-offset-2 transition-all`}
                   >
-                    <span className="sr-only">{c.id}</span>
+                    <span className="sr-only">{c.name}</span>
                   </Label>
+                  <span className="text-xs text-gray-500">{c.name}</span>
                 </div>
               ))}
             </RadioGroup>
-          </div>
+          </motion.div>
 
-          {/* Quantity & Buy Now */}
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="flex items-center border border-gray-300 rounded-md">
-              <Button
-                variant="ghost"
-                size="icon"
+          {/* Quantity & Actions */}
+          <motion.div
+            variants={fadeInUp}
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4"
+          >
+            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
                 onClick={decrementQuantity}
                 disabled={quantity <= 1}
-                className="h-10 w-10 text-gray-700"
+                className="h-12 w-12 flex items-center justify-center bg-gray-100 text-gray-700 disabled:opacity-50"
               >
                 <Minus className="h-4 w-4" />
-              </Button>
-              <div className="flex h-10 w-12 items-center justify-center font-medium bg-gray-50">
+              </motion.button>
+              <div className="flex h-12 w-16 items-center justify-center font-medium bg-white text-gray-900">
                 {quantity}
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
+              <motion.button
+                whileTap={{ scale: 0.9 }}
                 onClick={incrementQuantity}
-                className="h-10 w-10 text-gray-700"
+                className="h-12 w-12 flex items-center justify-center bg-gray-100 text-gray-700"
               >
                 <Plus className="h-4 w-4" />
-              </Button>
+              </motion.button>
             </div>
 
-            <Button
-              variant="default"
-              className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 transition"
-              disabled={!size || !color}
-              onClick={buyHandler}
-            >
-              Buy Now
-            </Button>
-          </div>
+            <div className="flex gap-3 w-full sm:w-auto">
+              <motion.button
+                variants={scaleUp}
+                whileHover="hover"
+                whileTap="tap"
+                onClick={buyHandler}
+                disabled={!size || !color}
+                className="flex-1 sm:flex-none h-12 px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                Buy Now
+              </motion.button>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -7,7 +7,7 @@ import { Lock, Mail } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Loader from "@/components/static/Loader";
@@ -15,7 +15,7 @@ import Loader from "@/components/static/Loader";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userLoading } = useSelector(store => store.user);
+  const { userLoading } = useSelector((store) => store.user);
   const {
     register,
     handleSubmit,
@@ -24,15 +24,15 @@ function Login() {
 
   function moveToNext(response) {
     if (response.success) {
-      toast.success(response.message)
+      toast.success(response.message);
       if (response?.user?.role === "admin") {
-        navigate("/dashboard")
+        navigate("/dashboard");
       } else {
-        navigate("/")
+        navigate("/");
       }
     } else {
-      toast.error(response)
-      dispatch(reset())
+      toast.error(response);
+      dispatch(reset());
     }
   }
 
@@ -40,45 +40,46 @@ function Login() {
     const payload = {
       username: data.username,
       email: data.email,
-      password: data.password
-    }
-    dispatch(UserLogin({
-      payload,
-      moveToNext
-    }))
+      password: data.password,
+    };
+    dispatch(UserLogin({ payload, moveToNext }));
   }
 
   return (
-    <div className="h-[100vh] flex justify-center">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-teal-500 to-blue-500 p-4">
       <Toaster />
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="w-[70vw] lg:w-[30vw] xl:w-[34vw] xxl:w-[22vw] m-auto px-4 py-4 rounded-lg flex flex-col gap-3 justify-center shadow-xl"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+        className="w-full max-w-md bg-white rounded-lg shadow-lg p-8"
       >
         <motion.h2
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="text-xl font-semibold text-center mb-2"
+          className="text-2xl font-bold text-center text-gray-800 mb-6"
         >
-          Login
+          Welcome Back
         </motion.h2>
 
         {/* Email Field */}
         <motion.div
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Label htmlFor="email" className="flex items-center mb-2">
-            <Mail className="h-4 w-4 mr-2" />
+          <Label
+            htmlFor="email"
+            className="flex items-center mb-2 text-gray-700"
+          >
+            <Mail className="h-5 w-5 mr-2 text-gray-500" />
             Email
           </Label>
           <Input
             placeholder="Enter Email"
             type="email"
+            className="mb-4"
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -88,7 +89,7 @@ function Login() {
             })}
           />
           {errors.email && (
-            <p className="ps-1 text-red-500">{errors.email.message}</p>
+            <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </motion.div>
 
@@ -98,13 +99,17 @@ function Login() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Label htmlFor="password" className="flex items-center mb-2">
-            <Lock className="h-4 w-4 mr-2" />
+          <Label
+            htmlFor="password"
+            className="flex items-center mb-2 text-gray-700"
+          >
+            <Lock className="h-5 w-5 mr-2 text-gray-500" />
             Password
           </Label>
           <Input
             placeholder="Enter Password"
             type="password"
+            className="mb-4"
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -114,7 +119,7 @@ function Login() {
             })}
           />
           {errors.password && (
-            <p className="ps-1 text-red-500">{errors.password.message}</p>
+            <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
         </motion.div>
 
@@ -122,11 +127,11 @@ function Login() {
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="mt-2"
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="mt-4"
         >
           <Button
-            className="bg-gray-800 w-full text-white hover:bg-black"
+            className="bg-teal-600 w-full text-white hover:bg-teal-700"
             onClick={handleSubmit(submitHandler)}
             disabled={userLoading}
           >
@@ -138,13 +143,13 @@ function Login() {
         <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="text-center text-sm mt-3 font-sm"
+          transition={{ duration: 0.5, delay: 1 }}
+          className="text-center text-sm mt-3 text-gray-600"
         >
           Don't have an account?{" "}
           <Link
             to="/signup"
-            className="text-blue-500 font-semibold cursor-pointer hover:underline"
+            className="text-teal-600 font-semibold hover:underline"
           >
             Register
           </Link>

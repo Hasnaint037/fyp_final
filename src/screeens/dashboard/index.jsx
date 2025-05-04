@@ -23,10 +23,10 @@ function index() {
     <div className="w-full">
       <ProductTiles />
       <div className="flex mt-5 gap-2 flex-col lg:flex-row w-[90%] m-auto">
-        <div className="w-[100%] lg:w-[70%]">
+        <div className="w-[100%] lg:w-[50%]">
           <ProductCountGraph />
         </div>
-        <div className="w-[100%] lg:w-[30%] py-4">
+        <div className="w-[100%] lg:w-[50%] py-4">
           <OrderStatusGraph />
         </div>
       </div>
