@@ -107,8 +107,14 @@ export default function CartDetails() {
         size={sizes}
         setSize={setSizes}
       />
-      <div className="flex justify-end items-center gap-3">
-        <h3>Total : {cartItems.reduce((acc, item) => acc + item.price, 0)}</h3>
+      <div className="flex justify-end ites-center gap-3">
+        <h3>
+          Total :
+          {cartItems.reduce(
+            (acc, item) => acc + item.price * (quantities[item._id] || 1),
+            0
+          )}
+        </h3>
         <Button
           size="lg"
           onClick={handlePlaceOrder}
