@@ -112,13 +112,13 @@ function Womens() {
           Why Choose Us?
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+          {/* <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
             <FaShoppingBag className="text-4xl text-pink-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Chic Styles</h3>
             <p className="text-gray-600">
               Trend-setting designs for every occasion.
             </p>
-          </div>
+          </div> */}
           <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
             <FaRocket className="text-4xl text-purple-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>

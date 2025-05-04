@@ -63,14 +63,6 @@ export default function CartDetails() {
             (acc, item) => acc + item.price * (quantities[item._id] || 1),
             0
           ),
-          shippingAddress: {
-            name: "Guest User",
-            phone: "0000000000",
-            address: "N/A",
-            city: "N/A",
-            postalCode: "00000",
-            country: "N/A",
-          },
         };
 
         dispatch(CreateOrder({ payload: orderPayload, moveToNext }))

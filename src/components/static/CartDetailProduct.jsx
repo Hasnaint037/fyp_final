@@ -2,17 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import { Minus, Plus } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Label } from "../ui/label";
 
-function CartDetailProduct({
-  quantities,
-  setQuantities,
-  colors,
-  setColors,
-  size,
-  setSize,
-}) {
+function CartDetailProduct({ quantities, setQuantities, setColors, setSize }) {
   const [cartItems, setCartItems] = useState([]);
 
   const incrementQuantity = (id) => {
@@ -79,7 +70,8 @@ function CartDetailProduct({
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
                   {item.name}
                 </h3>
-                <h4 className="text-sm text-gray-600">Select Color</h4>
+                <h4>{item?.price}/-</h4>
+                {/* <h4 className="text-sm text-gray-600">Select Color</h4>
                 <RadioGroup
                   value={colors[item._id] || "black"}
                   onValueChange={(value) =>
@@ -147,7 +139,7 @@ function CartDetailProduct({
                       </div>
                     ))}
                   </RadioGroup>
-                </div>
+                </div> */}
               </div>
             </div>
 

@@ -19,8 +19,6 @@ function ProductDetails() {
   const product = location?.state?.product;
 
   const [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () =>
@@ -102,7 +100,7 @@ function ProductDetails() {
 
         {/* Product Info */}
         <motion.div
-          className="md:col-span-1 lg:col-span-2 space-y-6"
+          className="md:col-span-1 lg:col-span-2 space-y-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.4 }}
@@ -117,68 +115,11 @@ function ProductDetails() {
             </span>
           </div>
 
-          <Separator className="my-4" />
+          <Separator className="my-2" />
 
           <div>
             <h3 className="mb-2 font-semibold text-gray-700">Description</h3>
             <p className="text-gray-600">{product?.description}</p>
-          </div>
-
-          {/* Size Selection */}
-          <div>
-            <h3 className="mb-3 font-semibold text-gray-700">Select Size</h3>
-            <RadioGroup
-              value={size}
-              onValueChange={setSize}
-              className="flex flex-wrap gap-3"
-            >
-              {["xs", "s", "m", "l", "xl", "xxl"].map((item) => (
-                <div key={item} className="flex items-center">
-                  <RadioGroupItem
-                    value={item}
-                    id={`size-${item}`}
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor={`size-${item}`}
-                    className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white font-medium uppercase transition hover:bg-indigo-100 peer-data-[state=checked]:border-indigo-600 peer-data-[state=checked]:bg-indigo-50 peer-data-[state=checked]:text-indigo-700"
-                  >
-                    {item}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
-
-          {/* Color Selection */}
-          <div>
-            <h3 className="mb-3 font-semibold text-gray-700">Select Color</h3>
-            <RadioGroup
-              value={color}
-              onValueChange={setColor}
-              className="flex gap-3 flex-wrap"
-            >
-              {[
-                { id: "black", color: "bg-black" },
-                { id: "white", color: "bg-white border" },
-                { id: "blue", color: "bg-blue-600" },
-                { id: "red", color: "bg-red-600" },
-              ].map((c) => (
-                <div key={c.id}>
-                  <RadioGroupItem
-                    value={c.id}
-                    id={`color-${c.id}`}
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor={`color-${c.id}`}
-                    className={`h-8 w-8 rounded-full cursor-pointer ${c.color} block peer-data-[state=checked]:ring-2 peer-data-[state=checked]:ring-indigo-600 peer-data-[state=checked]:ring-offset-2 transition-all`}
-                  >
-                    <span className="sr-only">{c.id}</span>
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
           </div>
 
           {/* Quantity & Buy Now */}
@@ -209,7 +150,6 @@ function ProductDetails() {
             <Button
               variant="default"
               className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 transition"
-              disabled={!size || !color}
               onClick={buyHandler}
             >
               Buy Now
