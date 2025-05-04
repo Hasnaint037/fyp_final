@@ -19,7 +19,6 @@ function ProductDetails() {
   const product = location?.state?.product;
 
   const [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState("");
   const [color, setColor] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -46,7 +45,6 @@ function ProductDetails() {
         <div class="bg-blue-50 p-4 rounded-lg">
           <p>• Quantity: <strong>${quantity}</strong></p>
           <p>• Color: <strong>${color || "Not selected"}</strong></p>
-          <p>• Size: <strong>${size || "Not selected"}</strong></p>
           <p class="mt-2">• Total: <strong class="text-lg">$${(
             product.price * quantity
           ).toFixed(2)}</strong></p>
@@ -73,7 +71,6 @@ function ProductDetails() {
               image: product.image,
               price: product.price,
               quantity,
-              size,
               color,
             },
           ],
@@ -166,7 +163,7 @@ function ProductDetails() {
 
         {/* Product Info */}
         <motion.div
-          className="space-y-6"
+          className="space-y-6 mt-4"
           initial="hidden"
           animate="visible"
           variants={{
@@ -201,32 +198,6 @@ function ProductDetails() {
             <p className="text-gray-600 leading-relaxed">
               {product?.description}
             </p>
-          </motion.div>
-
-          {/* Size Selection */}
-          <motion.div variants={fadeInUp}>
-            <h3 className="mb-3 text-lg font-semibold text-gray-800">Size</h3>
-            <RadioGroup
-              value={size}
-              onValueChange={setSize}
-              className="flex flex-wrap gap-3"
-            >
-              {["XS", "S", "M", "L", "XL", "XXL"].map((item) => (
-                <div key={item} className="flex items-center">
-                  <RadioGroupItem
-                    value={item}
-                    id={`size-${item}`}
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor={`size-${item}`}
-                    className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white font-medium transition hover:bg-emerald-50 hover:border-emerald-400 peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50 peer-data-[state=checked]:text-emerald-700"
-                  >
-                    {item}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
           </motion.div>
 
           {/* Color Selection */}
@@ -294,7 +265,7 @@ function ProductDetails() {
                 whileHover="hover"
                 whileTap="tap"
                 onClick={buyHandler}
-                disabled={!size || !color}
+                disabled={!color}
                 className="flex-1 sm:flex-none h-12 px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 Buy Now

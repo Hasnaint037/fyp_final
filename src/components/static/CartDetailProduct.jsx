@@ -117,37 +117,6 @@ function CartDetailProduct({
                     </div>
                   ))}
                 </RadioGroup>
-                <div>
-                  <h3 className="mb-3 font-semibold text-gray-700">
-                    Select Size
-                  </h3>
-                  <RadioGroup
-                    value={size[item._id] || "m"}
-                    onValueChange={(value) =>
-                      setSize((prev) => ({
-                        ...prev,
-                        [item._id]: value,
-                      }))
-                    }
-                    className="flex flex-wrap gap-3"
-                  >
-                    {["xs", "s", "m", "l", "xl", "xxl"].map((sizeOption) => (
-                      <div key={sizeOption} className="flex items-center">
-                        <RadioGroupItem
-                          value={sizeOption}
-                          id={`size-${item._id}-${sizeOption}`}
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor={`size-${item._id}-${sizeOption}`}
-                          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white font-medium uppercase transition hover:bg-indigo-100 peer-data-[state=checked]:border-indigo-600 peer-data-[state=checked]:bg-indigo-50 peer-data-[state=checked]:text-indigo-700"
-                        >
-                          {sizeOption}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
               </div>
             </div>
 
